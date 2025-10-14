@@ -123,14 +123,48 @@ class ApiService {
  }
 
  // ---- Products ----
- async getProducts(page = 1, limit = 20) {
+ async getProducts(
+  pageOrParams:
+   | number
+   | {
+      page?: number;
+      limit?: number;
+      q?: string;
+      category?: string;
+      featured?: boolean;
+      isActive?: boolean;
+      sort?: string;
+     } = 1,
+  limit = 20
+ ) {
+  // Allow both `getProducts(1, 20)` and `getProducts({ featured: true })`
+  const params =
+   typeof pageOrParams === "number"
+    ? { page: pageOrParams, limit }
+    : pageOrParams;
+
+  const query = new URLSearchParams();
+
+  if (params.page) query.set("page", String(params.page));
+  if (params.limit) query.set("limit", String(params.limit));
+  if (params.q) query.set("q", params.q);
+  if (params.category) query.set("category", params.category);
+  if (params.featured !== undefined)
+   query.set("featured", String(params.featured));
+  if (params.isActive !== undefined)
+   query.set("isActive", String(params.isActive));
+  if (params.sort) query.set("sort", params.sort);
+
+  const url = `/products${query.toString() ? `?${query.toString()}` : ""}`;
+
   return this.request<{
    items: any[];
    total: number;
    page: number;
    limit: number;
-  }>(`/products?page=${page}&limit=${limit}`);
+  }>(url);
  }
+
  async getProductBySlug(slug: string) {
   return this.request<any>(`/products/slug/${slug}`);
  }
@@ -171,41 +205,40 @@ class ApiService {
   return this.request<Order[]>("/orders/myOrders", { method: "GET" });
  }
 
-// ⬇️ put these inside the ApiService class, below the admin blog methods
+ // ⬇️ put these inside the ApiService class, below the admin blog methods
 
-// ---- Blogs (Public) ----
-async getBlogsPublic({
+ // ---- Blogs (Public) ----
+ async getBlogsPublic({
   page = 1,
   limit = 12,
   tag,
   category,
   q,
-}: {
+ }: {
   page?: number;
   limit?: number;
   tag?: string;
   category?: string;
   q?: string;
-}) {
+ }) {
   return this.request<{
-    items: Blog[];
-    page: number;
-    limit: number;
-    total: number;
-    totalPages: number;
-  }>('/blogs', {
-    // qs: { page, limit, tag, category, q }, // ✅ send query params
+   items: Blog[];
+   page: number;
+   limit: number;
+   total: number;
+   totalPages: number;
+  }>("/blogs", {
+   // qs: { page, limit, tag, category, q }, // ✅ send query params
   });
-}
+ }
 
-async getFeaturedBlog() {
-  return this.request<Blog>('/blogs/featured');
-}
+ async getFeaturedBlog() {
+  return this.request<Blog>("/blogs/featured");
+ }
 
-async getBlogBySlug(slug: string) {
+ async getBlogBySlug(slug: string) {
   return this.request<Blog>(`/blogs/${encodeURIComponent(slug)}`);
-}
-
+ }
 }
 
 export const apiService = new ApiService();

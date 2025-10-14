@@ -1,4 +1,4 @@
-// src/pages/Cart.tsx
+
 import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import NewHeader from '@/components/NewHeader';

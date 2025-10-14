@@ -59,12 +59,12 @@ const RecipesSection = () => {
         </div>
         
         {/* Explore Button */}
-        <Button 
+        {/* <Button 
           size="lg"
           className="bg-[hsl(var(--ff-yellow))] text-[hsl(var(--ff-dark))] hover:bg-[hsl(var(--ff-yellow))]/90 px-12 py-4 text-lg font-semibold rounded-full"
         >
           Explore Recipes
-        </Button>
+        </Button> */}
       </div>
     </section>
   );

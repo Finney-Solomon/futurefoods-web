@@ -1,4 +1,3 @@
-// src/pages/Shop.tsx
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { apiService } from "@/services/api";

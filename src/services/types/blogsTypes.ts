@@ -1,6 +1,3 @@
-
-// --- Blogs ---
-
 export type BlogBlockType = 'section' | 'image' | 'quote' | 'list' | 'html' | 'markdown';
 
 export interface BlogImage {

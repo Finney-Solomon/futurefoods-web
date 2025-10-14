@@ -1,4 +1,3 @@
-// src/pages/ProductDetail.tsx
 import React, { useMemo, useState } from 'react';
 import { useNavigate, useSearchParams, Link, useLocation } from 'react-router-dom';
 import NewHeader from '@/components/NewHeader';
