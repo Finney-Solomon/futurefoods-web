@@ -240,6 +240,36 @@ class ApiService {
  async getBlogBySlug(slug: string) {
   return this.request<Blog>(`/blogs/${encodeURIComponent(slug)}`);
  }
+
+async getRecipes(params: {
+    page?: number;
+    limit?: number;
+    q?: string;
+    tag?: string;
+    category?: string;
+    featured?: boolean | string;
+    isActive?: boolean | string;
+    sort?: string;
+  } = {}) {
+    const qs = new URLSearchParams(
+      Object.entries(params)
+        .filter(([, v]) => v !== undefined && v !== null && v !== "")
+        .reduce((acc, [k, v]) => {
+          acc[k] = String(v);
+          return acc;
+        }, {} as Record<string, string>)
+    ).toString();
+
+    return this.request<{
+      items: any;
+      total: number;
+      page: number;
+      limit: number;
+      totalPages: number;
+    }>(`/recipes${qs ? `?${qs}` : ""}`);
+  }
+
+ 
 }
 
 export const apiService = new ApiService();
