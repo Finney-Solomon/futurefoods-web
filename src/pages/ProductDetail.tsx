@@ -48,7 +48,9 @@ const ProductDetail: React.FC = () => {
     return pick;
   }, [preloadedFromState, cached, slug]);
 
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState(() => (product?.stock ?? 0) > 0 ? 1 : 0);
+  const [showModal, setShowModal] = useState(false);
+
   const inStock = (product?.stock ?? 0) > 0;
 
   // const handleAddToCart = () => {
@@ -67,18 +69,19 @@ const ProductDetail: React.FC = () => {
   // };
 
   const handleAddToCart = async () => {
-  if (!product) return;
-  try {
-    await apiService.addToCart(product._id, quantity);
-    // optional: show a toast here
-    // toast.success('Added to cart');
-    // Go to cart
-    navigate('/cart');
-  } catch (e: any) {
-    // toast.error(e?.message || 'Could not add to cart');
-    if (e?.status === 401) navigate('/login', { state: { from: '/product-detail' } });
-  }
-};
+    if (!product) return;
+    try {
+      console.log(product._id,quantity,"quantityquantity")
+      await apiService.addToCart(product._id, quantity);
+      // optional: show a toast here
+      // toast.success('Added to cart');
+      // Go to cart
+      navigate('/cart');
+    } catch (e: any) {
+      // toast.error(e?.message || 'Could not add to cart');
+      if (e?.status === 401) navigate('/login', { state: { from: '/product-detail' } });
+    }
+  };
 
   const handleBuyNow = () => {
     if (!product) return;
@@ -119,7 +122,25 @@ const ProductDetail: React.FC = () => {
   return (
     <div className="min-h-screen bg-white">
       <NewHeader />
-
+      {/* ✅ Core Modal */}
+      {showModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
+          <div className="bg-white rounded-lg shadow-xl p-6 w-80 text-center animate-fadeIn">
+            <h3 className="text-lg font-semibold mb-2 text-gray-800">
+              Maximum Quantity Reached
+            </h3>
+            <p className="text-gray-600 mb-4">
+              You’ve reached the maximum available quantity ({product.stock}).
+            </p>
+            <button
+              onClick={() => setShowModal(false)}
+              className="bg-[hsl(var(--ff-yellow))] text-[hsl(var(--ff-dark))] font-semibold hover:bg-[hsl(var(--ff-yellow))]/90 px-4 py-2 rounded transition"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      )}
       <main className="py-20 px-6">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16">
           {/* Left Column - Image */}
@@ -159,50 +180,77 @@ const ProductDetail: React.FC = () => {
               )}
             </div>
 
-            {/* Quantity Selector */}
-            <div className="flex items-center space-x-4">
-              <span className="text-lg font-semibold text-[hsl(var(--ff-dark))]">Quantity:</span>
-              <div className="flex items-center border border-gray-300 rounded-lg">
-                <button
-                  type="button"
-                  onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                  className="p-2 hover:bg-gray-100 disabled:opacity-50"
-                  disabled={!inStock}
+            <div className="flex flex-col space-y-4">
+              {/* Quantity Selector */}
+              <div className="flex items-center space-x-4">
+                <span className="text-lg font-semibold text-[hsl(var(--ff-dark))]">Quantity:</span>
+                <div className="flex items-center border border-gray-300 rounded-lg">
+                  {/* Decrease Button */}
+                  <button
+                    type="button"
+                    onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                    className="p-2 rounded transition hover:bg-gray-100"
+                    disabled={!inStock || (product.stock ?? 0) <= 0} // just disabled
+                  >
+                    <Minus className="w-4 h-4" />
+                  </button>
+
+                  {/* Quantity Display */}
+                  <span className="px-4 py-2 text-lg font-semibold min-w-10 text-center">
+                    {quantity}
+                  </span>
+
+                  {/* Increase Button */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setQuantity((q) => {
+                        const max = product?.stock ?? 1;
+                        if (q >= max) {
+                          setShowModal(true);
+                          return q;
+                        }
+                        return q + 1;
+                      });
+                    }}
+                    className="p-2 rounded transition hover:bg-gray-100"
+                    disabled={!inStock || (product.stock ?? 0) <= 0} // just disabled
+                  >
+                    <Plus className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+
+
+              {/* Action Buttons */}
+              <div className="flex space-x-4">
+                <Button
+                  onClick={handleAddToCart}
+                  disabled={!inStock || (product.stock ?? 0) <= 0}
+                  className={`px-8 py-3 text-lg font-semibold rounded-full transition ${product.stock && product.stock > 0
+                    ? "bg-[hsl(var(--ff-yellow))] text-[hsl(var(--ff-dark))] hover:bg-[hsl(var(--ff-yellow))]/90"
+                    : "bg-gray-200 text-gray-600 cursor-not-allowed"
+                    }`}
+                  size="lg"
                 >
-                  <Minus className="w-4 h-4" />
-                </button>
-                <span className="px-4 py-2 text-lg font-semibold min-w-10 text-center">{quantity}</span>
-                <button
-                  type="button"
-                  onClick={() => setQuantity((q) => Math.min((product?.stock ?? 1), q + 1))}
-                  className="p-2 hover:bg-gray-100 disabled:opacity-50"
-                  disabled={!inStock}
+                  Add to Cart
+                </Button>
+
+                <Button
+                  onClick={handleBuyNow}
+                  disabled={!inStock || (product.stock ?? 0) <= 0}
+                  variant="outline"
+                  className={`px-8 py-3 text-lg font-semibold rounded-full transition border-2 ${product.stock && product.stock > 0
+                    ? "border-[hsl(var(--ff-navy))] text-[hsl(var(--ff-navy))] hover:bg-[hsl(var(--ff-navy))] hover:text-white"
+                    : "border-gray-300 bg-gray-200 text-gray-600 cursor-not-allowed"
+                    }`}
+                  size="lg"
                 >
-                  <Plus className="w-4 h-4" />
-                </button>
+                  Buy Now
+                </Button>
               </div>
             </div>
 
-            {/* Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Button
-                onClick={handleAddToCart}
-                disabled={!inStock}
-                className="bg-[hsl(var(--ff-yellow))] text-[hsl(var(--ff-dark))] hover:bg-[hsl(var(--ff-yellow))]/90 px-8 py-3 text-lg font-semibold rounded-full disabled:opacity-60"
-                size="lg"
-              >
-                Add to Cart
-              </Button>
-              <Button
-                onClick={handleBuyNow}
-                disabled={!inStock}
-                variant="outline"
-                className="border-2 border-[hsl(var(--ff-navy))] text-[hsl(var(--ff-navy))] hover:bg-[hsl(var(--ff-navy))] hover:text-white px-8 py-3 text-lg font-semibold rounded-full disabled:opacity-60"
-                size="lg"
-              >
-                Buy Now
-              </Button>
-            </div>
           </div>
         </div>
       </main>

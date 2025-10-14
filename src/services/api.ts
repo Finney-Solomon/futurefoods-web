@@ -180,6 +180,7 @@ class ApiService {
   });
  }
  async updateCartItem(itemId: string, quantity: number) {
+  console.log(itemId,quantity,'"quantity')
   return this.request<Cart>(`/cart/items/${itemId}`, {
    method: "PUT",
    body: JSON.stringify({ quantity }),

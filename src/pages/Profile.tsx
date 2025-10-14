@@ -16,15 +16,29 @@ function formatINRFromPaise(paise?: number) {
  }).format(rupees);
 }
 
+// function formatDateTime(iso?: string) {
+//  if (!iso) return "—";
+//  try {
+//   const d = new Date(iso);
+//   return d.toLocaleString();
+//  } catch {
+//   return iso;
+//  }
+// }
+
 function formatDateTime(iso?: string) {
- if (!iso) return "—";
- try {
-  const d = new Date(iso);
-  return d.toLocaleString();
- } catch {
-  return iso;
- }
+  if (!iso) return "—";
+  try {
+    const d = new Date(iso);
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, "0");
+    const dd = String(d.getDate()).padStart(2, "0");
+    return `${dd}-${mm}-${yyyy}`;
+  } catch {
+    return iso;
+  }
 }
+
 
 const StatusBadge: React.FC<{ status: Order["status"] }> = ({ status }) => {
  const map: Record<Order["status"], string> = {
@@ -127,6 +141,7 @@ const OrderCard: React.FC<{ order: Order }> = ({ order }) => {
 
 const Profile: React.FC = () => {
  const { user, logout } = useAuth();
+ console.log(user,"useruser")
  const navigate = useNavigate();
  const [orders, setOrders] = useState<Order[] | null>(null);
  const [loading, setLoading] = useState(true);
@@ -207,10 +222,10 @@ const Profile: React.FC = () => {
           <p className="text-sm text-gray-500">Name</p>
           <p className="text-lg font-medium">{user?.name || "—"}</p>
          </div>
-         <div>
+         {/* <div>
           <p className="text-sm text-gray-500">Email</p>
           <p className="text-lg font-medium">{user?.email || "—"}</p>
-         </div>
+         </div> */}
         </div>
 
         {/* Optional: quick counts */}

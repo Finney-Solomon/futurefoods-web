@@ -16,6 +16,7 @@ function formatINRFromPaise(paise?: number) {
 const CartPage: React.FC = () => {
   const navigate = useNavigate();
   const [cart, setCart] = useState<Cart | null>(null);
+  console.log(cart,"cartcart")
   const [loading, setLoading] = useState(true);
 
   // Load cart on mount
@@ -44,10 +45,12 @@ const CartPage: React.FC = () => {
 
   // Update quantity (+/-)
   const changeQty = async (item: CartItem, nextQty: number) => {
+    console.log(item,nextQty,"nextQtynextQty")
     if (nextQty < 1) return;
     try {
-      const updated = await apiService.updateCartItem(item._id, nextQty);
-      setCart(updated);
+      const updated = await apiService.updateCartItem(item?._id, nextQty);
+      console.log(updated,"updatedupdated")
+     setCart({ ...updated }); 
     } catch (e: any) {
       // toast.error(e?.message || 'Could not update item');
       if (e?.status === 401) navigate('/login', { state: { from: '/cart' } });
@@ -58,7 +61,7 @@ const CartPage: React.FC = () => {
   const removeItem = async (item: CartItem) => {
     try {
       const updated = await apiService.removeCartItem(item._id);
-      setCart(updated);
+    setCart({ ...updated }); 
     } catch (e: any) {
       if (e?.status === 401) navigate('/login', { state: { from: '/cart' } });
     }
