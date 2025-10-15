@@ -25,10 +25,12 @@ const RecipesSection = ({
      ...(featured ? { featured: true } : {}),
      sort: "-createdAt",
     });
+    console.log(res,Array.isArray(res?.items) ? res.items : [],"resresresres111111")
     setItems(Array.isArray(res?.items) ? res.items : []);
    } catch (e) {
     if (e?.name !== "AbortError")
      setErr(e?.message || "Failed to load recipes");
+    console.log(e?.message ,"AbortErrorAbortErrorAbortErrorAbortError")
    } finally {
     setLoading(false);
    }

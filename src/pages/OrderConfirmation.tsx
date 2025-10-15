@@ -31,7 +31,7 @@ const OrderConfirmation: React.FC = () => {
   return (
     <div className="min-h-screen bg-white">
       <NewHeader />
-      
+
       <main className="py-20 px-6">
         <div className="max-w-4xl mx-auto text-center">
           <div className="mb-8">
@@ -48,9 +48,9 @@ const OrderConfirmation: React.FC = () => {
                   Your order has been successfully placed. We’ve sent a confirmation email with your order details.
                 </p>
 
-                <div className="bg-[hsl(var(--ff-navy))] text-white p-6 rounded-lg inline-block mb-6">
-                  <p className="text-lg mb-2">Order Number</p>
-                  <p className="text-2xl font-bold text-[hsl(var(--ff-yellow))]">
+                <div className="bg-[hsl(var(--ff-navy))] text-white p-4 sm:p-6 rounded-xl w-full sm:w-auto max-w-sm sm:max-w-md md:max-w-lg mx-auto mb-6 text-center sm:text-left">
+                  <p className="text-base sm:text-lg mb-1 sm:mb-2">Order Number</p>
+                  <p className="text-xl sm:text-2xl md:text-3xl font-bold text-[hsl(var(--ff-yellow))] break-words">
                     {orderNumber}
                   </p>
                 </div>
@@ -79,16 +79,16 @@ const OrderConfirmation: React.FC = () => {
               </>
             )}
           </div>
-          
+
           <div className="space-y-6">
-            <Button 
+            <Button
               onClick={handleContinueShopping}
               className="bg-[hsl(var(--ff-yellow))] text-[hsl(var(--ff-dark))] hover:bg-[hsl(var(--ff-yellow))]/90 px-12 py-4 text-lg font-semibold rounded-full"
               size="lg"
             >
               Continue Shopping
             </Button>
-            
+
             <div className="text-center text-gray-600">
               <p>Questions about your order?</p>
               <p>Contact us at <span className="text-[hsl(var(--ff-navy))] font-semibold">support@futurefoodz.com</span></p>

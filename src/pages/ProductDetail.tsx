@@ -236,7 +236,7 @@ const ProductDetail: React.FC = () => {
                   Add to Cart
                 </Button>
 
-                <Button
+                {/* <Button
                   onClick={handleBuyNow}
                   disabled={!inStock || (product.stock ?? 0) <= 0}
                   variant="outline"
@@ -247,7 +247,7 @@ const ProductDetail: React.FC = () => {
                   size="lg"
                 >
                   Buy Now
-                </Button>
+                </Button> */}
               </div>
             </div>
 

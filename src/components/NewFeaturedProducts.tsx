@@ -104,8 +104,8 @@ const NewFeaturedProducts: React.FC<{ limit?: number; className?: string }> = ({
     >
       <div className="mx-auto max-w-[1400px]">
         <h2 className="mb-10 text-left text-[44px] leading-[1] font-extrabold tracking-tight text-[hsl(var(--ff-dark))] md:text-[72px]">
-          Featured Products
-        </h2>
+          Featured Products 
+        </h2> 
 
         {/* Loading */}
         {loading && (
