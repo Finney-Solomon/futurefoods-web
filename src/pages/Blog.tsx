@@ -72,7 +72,7 @@ const BlogPost = () => {
  const formatDate = (iso?: string) => {
   if (!iso) return "";
   // Format for Asia/Kolkata; tweak options as you like
-  return new Date(iso).toLocaleDateString("en-IN", {
+  return new Date(iso).toLocaleDateString("ko-KR", {
    year: "numeric",
    month: "long",
    day: "numeric",

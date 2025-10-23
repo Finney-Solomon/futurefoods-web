@@ -19,7 +19,7 @@ type Product = {
 function formatINRFromPaise(paise?: number) {
   if (typeof paise !== 'number') return '—';
   const rupees = paise / 100;
-  return new Intl.NumberFormat('en-IN', {
+  return new Intl.NumberFormat('ko-KR', {
     style: 'currency',
     currency: 'KRM',
     maximumFractionDigits: 2,

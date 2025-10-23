@@ -10,7 +10,7 @@ import { apiService, Cart, CartItem } from '@/services/api';
 function formatINRFromPaise(paise?: number) {
   if (typeof paise !== 'number') return '—';
   const rupees = paise / 100;
-  return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'KRM', maximumFractionDigits: 2 }).format(rupees);
+  return new Intl.NumberFormat('ko-KR', { style: 'currency', currency: 'KRM', maximumFractionDigits: 2 }).format(rupees);
 }
 
 const CartPage: React.FC = () => {
