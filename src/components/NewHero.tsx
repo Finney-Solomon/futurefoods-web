@@ -5,7 +5,9 @@ const NewHero = () => {
  return (
   <section className="relative bg-white">
    {/* Wide stage so the layout breathes like the mock */}
-   <div className="mx-auto max-w-[1400px] px-6 pt-16 pb-20 md:pt-20 lg:pt-24">
+   {/* <div className="mx-auto max-w-[1400px] px-6 pt-16 pb-20 md:pt-20 lg:pt-24"> */}
+   <div className="mx-auto max-w-[1400px] px-6 pt-[100px] pb-20 md:pt-20 lg:pt-24">
+
     {/* Headline row */}
     <div className="relative grid items-start lg:grid-cols-3">
      {/* Left: “Taste the” */}

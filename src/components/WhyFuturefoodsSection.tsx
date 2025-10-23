@@ -45,34 +45,36 @@ const WhyFuturefoodsSection = () => {
           </div>
 
           {/* RIGHT: Image masonry */}
-          <div className="grid grid-cols-[minmax(0,1fr)_320px] gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[minmax(0,1fr)_380px] gap-4 md:gap-6 w-full">
             {/* Tall left image */}
-            <div className="rounded-2xl overflow-hidden ring-1 ring-white/10">
+            <div className="rounded-2xl overflow-hidden ring-1 ring-white/10 h-full">
               <img
                 src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?auto=format&fit=crop&w=1600&q=80"
                 alt="Kimchi in jars"
-                className="h-[560px] w-full object-cover"
+                className="w-full h-full object-cover"
               />
             </div>
 
             {/* Right stack */}
-            <div className="grid gap-6">
+            <div className="grid gap-4 md:gap-6">
               <div className="rounded-2xl overflow-hidden ring-1 ring-white/10">
                 <img
                   src="https://images.unsplash.com/photo-1559181567-c3190ca9959b?auto=format&fit=crop&w=1200&q=80"
                   alt="Kombucha brewing"
-                  className="h-[260px] w-full object-cover"
+                  className="w-full h-[220px] sm:h-[240px] md:h-[260px] lg:h-[280px] object-cover"
                 />
               </div>
               <div className="rounded-2xl overflow-hidden ring-1 ring-white/10">
                 <img
                   src="https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=1200&q=80"
                   alt="Tofu skillet"
-                  className="h-[260px] w-full object-cover"
+                  className="w-full h-[220px] sm:h-[240px] md:h-[260px] lg:h-[280px] object-cover"
                 />
               </div>
             </div>
           </div>
+
+
         </div>
       </div>
     </section>
@@ -80,3 +82,34 @@ const WhyFuturefoodsSection = () => {
 };
 
 export default WhyFuturefoodsSection;
+
+
+// {/* RIGHT: Image masonry */}
+// <div className="grid grid-cols-[minmax(0,1fr)_320px] gap-6">
+//   {/* Tall left image */}
+//   <div className="rounded-2xl overflow-hidden ring-1 ring-white/10">
+//     <img
+//       src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?auto=format&fit=crop&w=1600&q=80"
+//       alt="Kimchi in jars"
+//       className="h-[560px] w-full object-cover"
+//     />
+//   </div>
+
+//   {/* Right stack */}
+//   <div className="grid gap-6">
+//     <div className="rounded-2xl overflow-hidden ring-1 ring-white/10">
+//       <img
+//         src="https://images.unsplash.com/photo-1559181567-c3190ca9959b?auto=format&fit=crop&w=1200&q=80"
+//         alt="Kombucha brewing"
+//         className="h-[260px] w-full object-cover"
+//       />
+//     </div>
+//     <div className="rounded-2xl overflow-hidden ring-1 ring-white/10">
+//       <img
+//         src="https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=1200&q=80"
+//         alt="Tofu skillet"
+//         className="h-[260px] w-full object-cover"
+//       />
+//     </div>
+//   </div>
+// </div>
