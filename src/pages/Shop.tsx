@@ -11,7 +11,7 @@ function formatINR(paise?: number) {
  const rupees = paise / 100;
  return new Intl.NumberFormat("en-IN", {
   style: "currency",
-  currency: "INR",
+  currency: "KRM",
   maximumFractionDigits: 2,
  }).format(rupees);
 }

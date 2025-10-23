@@ -43,9 +43,10 @@ const FermentationAdvantage = () => {
             <img
               src="/lovable-uploads/TheFermentationAdvantage.png"
               alt="Fermented jars"
-              className="w-full max-w-[800px] sm:max-w-[600px] md:max-w-[700px] lg:max-w-[820px] h-auto object-contain rounded-2xl"
+              className="w-full max-w-[300px] sm:max-w-[500px] md:w-[870px] lg:max-w-[800px] h-auto object-contain rounded-2xl"
             />
           </div>
+
         </div>
       </div>
     </section>
