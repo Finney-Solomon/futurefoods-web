@@ -9,9 +9,9 @@ import { useNavigate } from "react-router-dom";
 function formatINR(paise?: number) {
  if (typeof paise !== "number") return "—";
  const rupees = paise / 100;
- return new Intl.NumberFormat("ko-KR", {
+ return new Intl.NumberFormat("sv-SE", {
   style: "currency",
-  currency: "KRM",
+  currency: "SEK",
   maximumFractionDigits: 2,
  }).format(rupees);
 }

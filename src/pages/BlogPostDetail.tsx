@@ -35,7 +35,7 @@ export type BlogPost = {
 
 const formatDate = (iso?: string) =>
  iso
-  ? new Date(iso).toLocaleDateString("ko-KR", {
+  ? new Date(iso).toLocaleDateString("sv-SE", {
      year: "numeric",
      month: "long",
      day: "numeric",
