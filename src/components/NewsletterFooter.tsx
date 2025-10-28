@@ -72,7 +72,7 @@ const NewsletterFooter = () => {
                             onChange={(e) => setEmail(e.target.value)}
                             placeholder="Enter your email"
                             className={[
-                                "bg-white/20 border-white/30 text-white placeholder-white/70",
+                                "bg-white/20 border-white/30 text-white  placeholder:text-white",
                                 "rounded-full px-6 py-3 focus-visible:ring-2 focus-visible:ring-white/60",
                             ].join(" ")}
                             required
@@ -226,7 +226,7 @@ const NewsletterFooter = () => {
                 </div>
 
                 {/* Bottom bar */}
-                <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <div className=" pt-8 flex flex-col md:flex-row justify-between items-center">
                     <p className="text-gray-400 text-sm">
                         © 2025 Futurefoodz. All rights reserved.
                     </p>

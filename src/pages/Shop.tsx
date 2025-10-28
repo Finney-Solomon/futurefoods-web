@@ -29,11 +29,11 @@ const Shop: React.FC = () => {
   <div className="min-h-screen bg-white">
    <NewHeader />
 
-   <main className="py-20 px-6">
+   <main className="py-4 px-6">
     <div className="max-w-7xl mx-auto">
      {/* Page Header */}
      <div className="text-center mb-16">
-      <h1 className="text-5xl font-bold text-[hsl(var(--ff-dark))] mb-6">
+      <h1 className="text-5xl font-bold text-[hsl(var(--ff-dark))] mb-3">
        Handcrafted Kimchi & Tempeh
       </h1>
       <p className="text-xl text-gray-600 max-w-3xl mx-auto">

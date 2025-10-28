@@ -31,7 +31,7 @@ const CTASection: React.FC<Props> = ({
       }}
     >
       {/* vignette over the photo */}
-      <div className="absolute inset-0 bg-[#0F101300]/70 [mask-image:radial-gradient(1200px_400px_at_50%_18%,#000_35%,transparent_10%)]" />
+      {/* <div className="absolute inset-0 bg-[#0F101300]/70 [mask-image:radial-gradient(1200px_400px_at_50%_18%,#000_35%,transparent_10%)]" /> */}
 
       {/* soft spotlight beneath the card */}
       <div className="pointer-events-none absolute left-1/2 top-[58%] -translate-x-1/2 h-[440px] w-[1200px] rounded-[48px] blur-3xl bg-black/60" />

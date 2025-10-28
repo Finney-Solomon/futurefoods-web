@@ -117,7 +117,7 @@ const HealthySection = () => {
           {data[activeCategory].map((p, i) => (
             <article
               key={i}
-              className="relative h-[360px] overflow-hidden rounded-[20px] shadow-[0_8px_24px_rgba(0,0,0,0.15)] cursor-pointer group"
+              className="relative h-[360px] overflow-hidden rounded-[20px]  cursor-pointer group"
             >
               <img
                 src={p.image}
@@ -126,7 +126,7 @@ const HealthySection = () => {
               />
 
               {/* Left fade overlay */}
-              <div className="absolute inset-0 bg-gradient-to-r from-[#001b3a]/70 via-[#001b3a]/30 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#001b3a]/40 via-[#001b3a]/10 to-transparent" />
 
               {/* Text block */}
               <div className="absolute bottom-6 left-6">

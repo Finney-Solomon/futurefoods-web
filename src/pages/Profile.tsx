@@ -271,7 +271,7 @@ const Profile: React.FC = () => {
     <div className="min-h-screen bg-white">
       <NewHeader />
 
-      <main className="py-20 px-6">
+      <main className="py-0 px-6">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-start justify-between gap-4 mb-10">
             <h1 className="text-4xl font-bold text-[hsl(var(--ff-dark))]">

@@ -20,7 +20,7 @@ const Newsletter = () => {
       <div className="flex w-[448px] max-w-full flex-col items-stretch">
         <h2 className="text-white text-[35px] font-bold leading-none text-center self-center">
           Stay Fresh!
-        </h2>
+        </h2> 
         <form onSubmit={handleSubmit} className="bg-[rgba(0,0,0,0)] flex items-stretch gap-4 mt-[39px] max-md:max-w-full">
           <div className="bg-[rgba(255,255,255,0.4)] flex flex-col overflow-hidden text-base text-white font-normal leading-loose grow shrink-0 basis-0 w-fit pt-3 pb-5 px-4 rounded-[50px] max-md:pr-5">
             <input

@@ -76,14 +76,25 @@ export default function AuthScreens() {
   }
 
   return (
-    <div className="min-h-screen grid lg:grid-cols-2 bg-white text-[hsl(var(--ff-dark,220_15%_15%))]">
+    // <div className="min-h-screen grid lg:grid-cols-2 bg-white text-[hsl(var(--ff-dark,220_15%_15%))]">
+    <div className="min-h-screen grid lg:grid-cols-[3fr_2fr] bg-white text-[hsl(var(--ff-dark,220_15%_15%))]">
+
       {/* Left panel */}
       <div className="relative hidden lg:block overflow-hidden">
-        <img
+        {/* <img
           src="/lovable-uploads/testimonailBg.png"
           alt="Background"
-          className="absolute inset-0 h-full w-full object-cover"
-        />
+          // className="absolute inset-0 h-full w-full object-cover"
+            className="absolute inset-0 w-full h-full object-cover"
+
+        /> */}
+      
+          <img
+            src="/lovable-uploads/testimonailBg.png"
+            alt="Background"
+            className="absolute inset-0 w-full h-full object-contain"
+          />
+      
         <div className="absolute inset-0 bg-[hsl(var(--ff-navy,220_65%_18%))]/70" />
         <div className="relative z-10 h-full w-full flex flex-col justify-between p-10">
           <div className="flex items-center gap-3">

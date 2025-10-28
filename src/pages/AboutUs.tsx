@@ -9,7 +9,7 @@ const AboutUs = () => {
       
       <main>
         {/* Hero Section */}
-        <section className="py-20 px-6 bg-white">
+        <section className="py-8 px-6 bg-white">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12">
               <h1 className="text-5xl font-bold text-[hsl(var(--ff-dark))] mb-8">
