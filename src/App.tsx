@@ -11,6 +11,8 @@ import ProductDetail from "./pages/ProductDetail";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import OrderConfirmation from "./pages/OrderConfirmation";
+import PaymentSuccess from "./pages/PaymentSuccess";
+import PaymentCancel from "./pages/PaymentCancel";
 import BlogPostDetail from "./pages/BlogPostDetail";
 import NotFound from "./pages/NotFound";
 import AuthScreens from "./pages/AuthScreens";
@@ -58,6 +60,22 @@ const App = () => (
                             element={
                                 <ProtectedRoute>
                                     <OrderConfirmation />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="/payment/success"
+                            element={
+                                <ProtectedRoute>
+                                    <PaymentSuccess />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="/payment/cancel"
+                            element={
+                                <ProtectedRoute>
+                                    <PaymentCancel />
                                 </ProtectedRoute>
                             }
                         />

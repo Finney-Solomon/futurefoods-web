@@ -25,7 +25,7 @@ const NewHeader = () => {
     <>
       {/* Header */}
       <header className=" top-0 left-0 z-50 w-full bg-[#0D2A4B] md:bg-white ">
-        <div className="mx-auto max-w-7xl px-4 md:px-6">
+        <div className="mx-auto max-w-7xl px-4 md:px-6s">
           <div className="flex h-20 md:h-24 items-center justify-between">
             {/* Mobile: Hamburger (md:hidden) */}
             <button

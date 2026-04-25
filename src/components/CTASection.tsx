@@ -14,14 +14,14 @@ const CTASection: React.FC<Props> = ({
   overlap = true,
 }) => {
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   return (
     <section
       aria-label="Join us call to action"
       className={[
         "relative overflow-hidden",
         // height & spacing tuned to your screenshot
-        // "py-10 sm:py-14 md:py-20",
+        "py-10 sm:py-14 md:py-20",
         overlap ? "-mt-10 sm:-mt-16 md:-mt-24" : "",
       ].join(" ")}
       style={{
@@ -56,7 +56,7 @@ const CTASection: React.FC<Props> = ({
               </Button>
 
               <Button
-                onClick={()=>{
+                onClick={() => {
                   navigate('/shop')
                 }}
                 size="lg"

@@ -1,8 +1,9 @@
-import React from 'react';
+import React from "react";
 
 const Footer = () => {
-  const quickLinks = ['Shop', 'About Us', 'Our Process', 'Recipes'];
-  const supportLinks = ['Contact Us', 'FAQ', 'Shipping', 'Returns'];
+  const currentYear = new Date().getFullYear();
+  const quickLinks = ["Shop", "About Us", "Our Process", "Recipes"];
+  const supportLinks = ["Contact Us", "FAQ", "Shipping", "Returns"];
 
   return (
     <footer className="bg-zinc-900 flex flex-col overflow-hidden items-stretch pl-[38px] pt-[111px] max-md:max-w-full max-md:pl-5 max-md:pt-[100px]">
@@ -23,7 +24,7 @@ const Footer = () => {
                   {quickLinks.map((link, index) => (
                     <a
                       key={index}
-                      href={`#${link.toLowerCase().replace(' ', '-')}`}
+                      href={`#${link.toLowerCase().replace(" ", "-")}`}
                       className="leading-none hover:text-yellow-300 transition-colors mt-3.5 first:mt-0"
                     >
                       {link}
@@ -39,7 +40,7 @@ const Footer = () => {
                   {supportLinks.map((link, index) => (
                     <a
                       key={index}
-                      href={`#${link.toLowerCase().replace(' ', '-')}`}
+                      href={`#${link.toLowerCase().replace(" ", "-")}`}
                       className="leading-none hover:text-yellow-300 transition-colors mt-[18px] first:mt-0"
                     >
                       {link}
@@ -61,7 +62,7 @@ const Footer = () => {
           </div>
         </div>
         <div className="bg-[rgba(0,0,0,0)] flex w-full max-w-[1576px] flex-col items-center text-sm text-white font-normal text-center leading-none justify-center px-[70px] py-[31px] max-md:max-w-full max-md:px-5">
-          <p>© 2023 Future Foodz. All rights reserved.</p>
+          <p>© {currentYear} Future Foodz. All rights reserved.</p>
         </div>
       </div>
     </footer>

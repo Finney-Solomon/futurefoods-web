@@ -8,6 +8,7 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
 const NewsletterFooter = () => {
     const [email, setEmail] = useState("");
     const [error, setError] = useState("");
+    const currentYear = new Date().getFullYear();
 
     const footerLinks = useMemo(
         () => ({
@@ -42,20 +43,17 @@ const NewsletterFooter = () => {
             return;
         }
         setError("");
-        // TODO: call your newsletter API here
         console.log("Newsletter signup:", email);
         setEmail("");
     };
 
     return (
-        <footer className="bg-black text-white pt-16 pb-16 px-6">
-            {/* CTA with background photo */}
+        <footer className="bg-black text-white pb-16 px-6 mt-10">
             <CTASection bgImage="/lovable-uploads/testimonailBg.png" overlap />
 
-            <div className="max-w-7xl mx-auto">
-                {/* Newsletter */}
+            <div className="max-w-7xl mx-auto ">
                 <div className="text-center mb-16">
-                    <h2 className="text-4xl font-bold mb-12 mt-24">Stay Fresh!</h2>
+                    <h2 className="text-4xl font-bold mb-12">Stay Fresh!</h2>
 
                     <form
                         onSubmit={handleSubmit}
@@ -98,22 +96,18 @@ const NewsletterFooter = () => {
                     ) : null}
                 </div>
 
-                {/* Columns */}
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-                    {/* Brand */}
                     <div className="max-w-xs">
                         <img
                             src="/lovable-uploads/logo.png"
                             alt="FutureFoodz Logo"
                             className="w-50 h-20 "
                         />
-                        {/* <h3 className="text-2xl font-bold mb-6">futurefoodz</h3> */}
                         <p className="text-gray-400 text-sm leading-relaxed">
-                            #NoFuss — just pure, fermented goodness for your health and the planet.
+                            #NoFuss - just pure, fermented goodness for your health and the planet.
                         </p>
                     </div>
 
-                    {/* Company */}
                     <nav aria-label="Company">
                         <h4 className="text-lg font-semibold mb-4">Company</h4>
                         <ul className="space-y-3">
@@ -123,7 +117,7 @@ const NewsletterFooter = () => {
                                         href={l.href}
                                         onClick={(e) => {
                                             if (l.href === "#") {
-                                                e.preventDefault(); // prevent navigation
+                                                e.preventDefault();
                                                 console.log(`Link "${l.label}" clicked but is inactive`);
                                             }
                                         }}
@@ -134,10 +128,8 @@ const NewsletterFooter = () => {
                                 </li>
                             ))}
                         </ul>
-
                     </nav>
 
-                    {/* Products */}
                     <nav aria-label="Products">
                         <h4 className="text-lg font-semibold mb-4">Products</h4>
                         <ul className="space-y-3">
@@ -147,7 +139,7 @@ const NewsletterFooter = () => {
                                         href={l.href}
                                         onClick={(e) => {
                                             if (l.href === "#") {
-                                                e.preventDefault(); // prevent navigation
+                                                e.preventDefault();
                                                 console.log(`Link "${l.label}" clicked but is inactive`);
                                             }
                                         }}
@@ -160,7 +152,6 @@ const NewsletterFooter = () => {
                         </ul>
                     </nav>
 
-                    {/* Support & Social */}
                     <div>
                         <nav aria-label="Support">
                             <h4 className="text-lg font-semibold mb-4">Support</h4>
@@ -171,7 +162,7 @@ const NewsletterFooter = () => {
                                             href={l.href}
                                             onClick={(e) => {
                                                 if (l.href === "#") {
-                                                    e.preventDefault(); // prevent navigation
+                                                    e.preventDefault();
                                                     console.log(`Link "${l.label}" clicked but is inactive`);
                                                 }
                                             }}
@@ -184,11 +175,9 @@ const NewsletterFooter = () => {
                             </ul>
                         </nav>
 
-                        {/* Social */}
                         <div className="mt-6" aria-label="Follow us">
                             <h5 className="text-sm font-semibold mb-3">Follow Us</h5>
                             <div className="flex space-x-4">
-                                {/* Facebook */}
                                 <a
                                     href="https://www.facebook.com/"
                                     aria-label="Facebook"
@@ -199,7 +188,6 @@ const NewsletterFooter = () => {
                                     </svg>
                                 </a>
 
-                                {/* Instagram */}
                                 <a
                                     href="https://www.instagram.com/"
                                     aria-label="Instagram"
@@ -210,7 +198,6 @@ const NewsletterFooter = () => {
                                     </svg>
                                 </a>
 
-                                {/* Twitter/X */}
                                 <a
                                     href="https://twitter.com/"
                                     aria-label="Twitter"
@@ -225,10 +212,9 @@ const NewsletterFooter = () => {
                     </div>
                 </div>
 
-                {/* Bottom bar */}
                 <div className=" pt-8 flex flex-col md:flex-row justify-between items-center">
                     <p className="text-gray-400 text-sm">
-                        © 2025 Futurefoodz. All rights reserved.
+                        © {currentYear} Futurefoodz. All rights reserved.
                     </p>
                     <div className="flex space-x-6 mt-4 md:mt-0">
                         <a href="/privacy" className="text-gray-400 hover:text-white text-sm">

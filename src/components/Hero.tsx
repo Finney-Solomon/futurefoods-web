@@ -10,11 +10,11 @@ const Hero = () => {
   };
 
   return (
-    <section className="flex w-full max-w-[1437px] flex-col items-center ml-[65px] mt-[89px] max-md:max-w-full max-md:mt-10">
+    <section className="flex w-full max-w-[1437px] flex-col items-center ml-[65px] max-md:max-w-full max-md:mt-0">
       <div className="self-stretch max-md:max-w-full max-md:pr-5">
         <div className="gap-5 flex max-md:flex-col max-md:items-stretch">
-          <div className="w-[73%] max-md:w-full max-md:ml-0">
-            <h1 className="text-[rgba(0,38,82,1)] text-9xl font-semibold leading-[120px] mr-[-910px] mt-[43px] max-md:max-w-full max-md:text-[40px] max-md:leading-[42px] max-md:mt-10">
+          <div className="w-[80%] max-md:w-full max-md:ml-0">
+            <h1 className="text-[rgba(0,38,82,1)] text-9xl font-semibold leading-[120px] mr-[-910px] max-md:max-w-full max-md:text-[40px] max-md:leading-[42px] max-md:mt-10">
               Taste the{" "}
               <span className="font-bold italic text-[rgba(255,202,106,1)]">
                 Future

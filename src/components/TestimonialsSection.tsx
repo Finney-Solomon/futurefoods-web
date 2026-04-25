@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { apiService, Review } from "@/services/api";
 
 // --- ICONS ---
 const QuoteIcon = ({ className }: { className?: string }) => (
@@ -29,6 +30,19 @@ const ArrowIcon = ({ className }: { className?: string }) => (
     <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
   </svg>
 );
+
+const getInitials = (name: string) => {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (parts.length >= 2) {
+    return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
+  }
+  return (parts[0] || "User").slice(0, 2).toUpperCase();
+};
+
+const getFallbackImage = (name: string) =>
+  `https://placehold.co/96x96/FFFFFF/0D2A4B?text=${encodeURIComponent(
+    getInitials(name),
+  )}`;
 
 // --- Testimonial Card ---
 interface TestimonialCardProps {
@@ -68,7 +82,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
             alt={name}
             className="w-24 h-24 rounded-full object-cover border-4 border-white shadow-lg"
             onError={(e) => {
-              e.currentTarget.src = "https://placehold.co/96x96/FFFFFF/0D2A4B?text=User";
+              e.currentTarget.src = getFallbackImage(name);
             }}
           />
         </div>
@@ -85,7 +99,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
 
 // --- Main Section ---
 const TestimonialsSection: React.FC = () => {
-  const testimonials: TestimonialCardProps[] = [
+  const fallbackTestimonials: TestimonialCardProps[] = [
     { image: "https://images.unsplash.com/photo-1521119989659-a83eee488004?auto=format&fit=crop&w=150&h=150", name: "Hannah Schmitt", role: "Lead Designer", testimonial: "Lorem ipsum dolor sit amet." },
     { image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&h=150", name: "John Doe", role: "Product Manager", testimonial: "Suspendisse sed magna eget nibh." },
     { image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=150&h=150", name: "Jane Smith", role: "UI/UX Designer", testimonial: "Curabitur nisl mauris, nec turpis." },
@@ -93,8 +107,45 @@ const TestimonialsSection: React.FC = () => {
     { image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=150&h=150", name: "Bob Green", role: "Marketing", testimonial: "Yet another testimonial card." },
   ];
 
+  const [reviews, setReviews] = useState<TestimonialCardProps[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [animate, setAnimate] = useState(false);
+  const testimonials = reviews.length > 0 ? reviews : fallbackTestimonials;
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const loadReviews = async () => {
+      try {
+        const response = await apiService.getReviews();
+        const reviewItems = Array.isArray(response)
+          ? response
+          : response.data || response.items || response.reviews || [];
+
+        const visibleReviews = reviewItems
+          .filter((review: Review) => review.isActive !== false && review.isVisible !== false)
+          .map((review: Review) => ({
+            image: review.imageUrl || getFallbackImage(review.reviewerName),
+            name: review.reviewerName,
+            role: review.title || `${review.rating}/5 Stars`,
+            testimonial: review.comment,
+          }));
+
+        if (!cancelled) {
+          setReviews(visibleReviews);
+          setCurrentIndex(0);
+        }
+      } catch (error) {
+        console.error("Failed to load reviews", error);
+      }
+    };
+
+    loadReviews();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const prev = () => {
     setAnimate(true);
