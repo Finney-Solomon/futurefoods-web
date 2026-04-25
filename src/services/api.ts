@@ -1,7 +1,7 @@
 import { Blog } from "./types/blogsTypes";
 
 // const API_BASE_URL = "http://localhost:5858/api";
-const API_BASE_URL = "https://futurefoods-api.vercel.app";
+const API_BASE_URL = "https://futurefoods-api.vercel.app/api";
 
 export type ApiUser = {
   id: string;
