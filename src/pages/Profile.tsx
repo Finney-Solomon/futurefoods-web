@@ -95,11 +95,18 @@ const OrderCard: React.FC<{ order: Order; onRefresh: () => Promise<void> }> = ({
   const handleCompletePayment = async () => {
     setPaymentLoading(true);
     try {
-      const session = await apiService.createCheckoutSession(order._id);
-      if (!session.url) {
+      const encodedOrderId = encodeURIComponent(order._id);
+      const session = await apiService.createCheckoutSession(order._id, {
+        successUrl: `${window.location.origin}/payment/success?orderId=${encodedOrderId}`,
+        cancelUrl: `${window.location.origin}/payment/cancel?orderId=${encodedOrderId}`,
+      });
+      const checkoutUrl = session.url || session.checkoutUrl;
+
+      if (!checkoutUrl) {
         throw new Error("Checkout session URL was not returned by the server.");
       }
-      window.location.assign(session.url);
+      localStorage.setItem("futurefoods.pendingCheckoutOrderId", order._id);
+      window.location.assign(checkoutUrl);
     } catch (e) {
       console.error("Payment redirect error", e);
       setPaymentLoading(false);

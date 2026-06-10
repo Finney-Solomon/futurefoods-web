@@ -26,7 +26,9 @@ function toDisplayLabel(value?: string) {
 
 const PaymentSuccess: React.FC = () => {
   const [searchParams] = useSearchParams();
-  const orderId = searchParams.get("orderId");
+  const orderId =
+    searchParams.get("orderId") ||
+    localStorage.getItem("futurefoods.pendingCheckoutOrderId");
   const [order, setOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -47,6 +49,7 @@ const PaymentSuccess: React.FC = () => {
         const data = await apiService.getOrderById(orderId);
         if (!active) return;
         setOrder(data);
+        localStorage.removeItem("futurefoods.pendingCheckoutOrderId");
 
         const stillProcessing =
           data.paymentStatus === "processing" || data.paymentStatus === "pending";
@@ -75,12 +78,12 @@ const PaymentSuccess: React.FC = () => {
   const title = useMemo(() => {
     if (!order) return "Payment Received";
     if (order.paymentStatus === "succeeded" || order.status === "paid") {
-      return "Payment Successful";
+      return "Order Confirmed";
     }
     if (order.paymentStatus === "processing") {
-      return "Payment Processing";
+      return "Order Received";
     }
-    return "Order Created";
+    return "Order Confirmation";
   }, [order]);
 
   return (
@@ -117,7 +120,7 @@ const PaymentSuccess: React.FC = () => {
                 <p className="mx-auto mt-4 max-w-2xl text-gray-600">
                   {order?.paymentStatus === "succeeded" || order?.status === "paid"
                     ? "Your payment has been completed and your order is now confirmed."
-                    : "Your order is created and we are waiting for final payment confirmation from Stripe."}
+                    : "Your payment provider has returned you to Future Foods. Your order details are below while final payment confirmation is completed."}
                 </p>
 
                 {order && (

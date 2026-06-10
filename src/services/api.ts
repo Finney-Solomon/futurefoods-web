@@ -125,6 +125,11 @@ export type CreateCheckoutSessionResponse = {
   message?: string;
 };
 
+export type CreateCheckoutSessionOptions = {
+  successUrl?: string;
+  cancelUrl?: string;
+};
+
 export type PaymentStatusResponse = {
   orderId: string;
   orderNumber?: string;
@@ -325,11 +330,15 @@ class ApiService {
     );
   }
 
-  async createCheckoutSession(orderId: string) {
+  async createCheckoutSession(
+    orderId: string,
+    options?: CreateCheckoutSessionOptions,
+  ) {
     return this.request<CreateCheckoutSessionResponse>(
       `/orders/${orderId}/checkout-session`,
       {
         method: "POST",
+        body: JSON.stringify(options || {}),
       },
     );
   }

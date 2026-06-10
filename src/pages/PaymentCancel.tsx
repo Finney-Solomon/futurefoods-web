@@ -25,7 +25,9 @@ function toDisplayLabel(value?: string) {
 
 const PaymentCancel: React.FC = () => {
   const [searchParams] = useSearchParams();
-  const orderId = searchParams.get("orderId");
+  const orderId =
+    searchParams.get("orderId") ||
+    localStorage.getItem("futurefoods.pendingCheckoutOrderId");
   const [order, setOrder] = useState<Order | null>(null);
 
   useEffect(() => {
@@ -47,11 +49,18 @@ const PaymentCancel: React.FC = () => {
   const handleRetryPayment = async () => {
     if (!orderId) return;
     try {
-      const session = await apiService.createCheckoutSession(orderId);
-      if (!session.url) {
+      const encodedOrderId = encodeURIComponent(orderId);
+      const session = await apiService.createCheckoutSession(orderId, {
+        successUrl: `${window.location.origin}/payment/success?orderId=${encodedOrderId}`,
+        cancelUrl: `${window.location.origin}/payment/cancel?orderId=${encodedOrderId}`,
+      });
+      const checkoutUrl = session.url || session.checkoutUrl;
+
+      if (!checkoutUrl) {
         throw new Error("Checkout session URL was not returned by the server.");
       }
-      window.location.assign(session.url);
+      localStorage.setItem("futurefoods.pendingCheckoutOrderId", orderId);
+      window.location.assign(checkoutUrl);
     } catch (e) {
       console.error("Retry payment failed", e);
     }

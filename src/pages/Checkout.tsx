@@ -18,6 +18,43 @@ function formatPriceFromPaise(paise?: number) {
 }
 
 const STRIPE_MINIMUM_PAISE = 50;
+const SWEDISH_PINCODE_MIN = 10000;
+const SWEDISH_PINCODE_MAX = 98499;
+const PENDING_CHECKOUT_ORDER_KEY = "futurefoods.pendingCheckoutOrderId";
+
+function normalizeSwedishPincode(value: string) {
+  return value.replace(/\D/g, "").slice(0, 5);
+}
+
+function validateSwedishPincode(value: string) {
+  const normalized = normalizeSwedishPincode(value);
+
+  if (!normalized) return "Pin code is required.";
+  if (normalized.length !== 5) return "Swedish pin code must be 5 digits.";
+  if (/^(\d)\1{4}$/.test(normalized)) {
+    return "Enter a valid Swedish pin code.";
+  }
+
+  const numericValue = Number(normalized);
+  if (
+    numericValue < SWEDISH_PINCODE_MIN ||
+    numericValue > SWEDISH_PINCODE_MAX
+  ) {
+    return "Enter a valid Swedish pin code.";
+  }
+
+  return "";
+}
+
+function buildCheckoutReturnUrls(orderId: string) {
+  const origin = window.location.origin;
+  const encodedOrderId = encodeURIComponent(orderId);
+
+  return {
+    successUrl: `${origin}/payment/success?orderId=${encodedOrderId}`,
+    cancelUrl: `${origin}/payment/cancel?orderId=${encodedOrderId}`,
+  };
+}
 
 const Checkout: React.FC = () => {
   const { user, isAuthenticated } = useAuth();
@@ -106,11 +143,9 @@ const Checkout: React.FC = () => {
       case "city":
         return value.trim() ? "" : "City is required.";
       case "stateVal":
-        return value.trim() ? "" : "State is required.";
-      case "pincode":
-        if (!value.trim()) return "Pin code is required.";
-        if (!/^\d{6}$/.test(value)) return "Pin code must be 6 digits.";
         return "";
+      case "pincode":
+        return validateSwedishPincode(value);
       case "phone":
         if (value && !/^\+?\d{10,15}$/.test(value)) {
           return "Invalid phone number.";
@@ -142,7 +177,7 @@ const Checkout: React.FC = () => {
         setStateVal(value);
         break;
       case "pincode":
-        setPincode(value);
+        setPincode(normalizeSwedishPincode(value));
         break;
       case "phone":
         setPhone(value);
@@ -192,8 +227,8 @@ const Checkout: React.FC = () => {
     const orderAddress: OrderAddress = {
       line1: address,
       city,
-      state: stateVal,
-      pin: pincode,
+      state: stateVal.trim() || undefined,
+      pin: normalizeSwedishPincode(pincode),
       phone: phone || undefined,
     };
 
@@ -212,10 +247,17 @@ const Checkout: React.FC = () => {
         throw new Error("Unable to retrieve order ID from server response.");
       }
 
-      const session = await apiService.createCheckoutSession(orderId);
+      localStorage.setItem(PENDING_CHECKOUT_ORDER_KEY, orderId);
 
-      if (session.url) {
-        window.location.assign(session.url);
+      const session = await apiService.createCheckoutSession(
+        orderId,
+        buildCheckoutReturnUrls(orderId),
+      );
+
+      const checkoutUrl = session.url || session.checkoutUrl;
+
+      if (checkoutUrl) {
+        window.location.assign(checkoutUrl);
         return;
       }
 
@@ -305,7 +347,7 @@ const Checkout: React.FC = () => {
                     { id: "email", label: "Email", value: email },
                     { id: "address", label: "Address", value: address },
                     { id: "city", label: "City", value: city },
-                    { id: "stateVal", label: "State", value: stateVal },
+                    { id: "stateVal", label: "State (optional)", value: stateVal },
                     { id: "pincode", label: "Pin Code", value: pincode },
                     { id: "phone", label: "Phone (optional)", value: phone },
                   ].map(({ id, label, value }) => (
@@ -324,6 +366,11 @@ const Checkout: React.FC = () => {
                         placeholder={label}
                         value={value}
                         onChange={(e) => handleChange(id, e.target.value)}
+                        inputMode={id === "pincode" ? "numeric" : undefined}
+                        maxLength={id === "pincode" ? 5 : undefined}
+                        autoComplete={
+                          id === "pincode" ? "postal-code" : undefined
+                        }
                         className={errors[id] ? "border-red-500" : ""}
                       />
                       {errors[id] && (
