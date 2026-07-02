@@ -5,6 +5,7 @@ import NewsletterFooter from '@/components/NewsletterFooter';
 import { Button } from '@/components/ui/button';
 import { Minus, Plus } from 'lucide-react';
 import { apiService } from '@/services/api';
+import { addToCart } from '@/lib/cart';
 
 type Product = {
   _id: string;
@@ -68,19 +69,19 @@ const ProductDetail: React.FC = () => {
   //   });
   // };
 
-  const handleAddToCart = async () => {
+  const handleAddToCart = () => {
     if (!product) return;
-    try {
-      console.log(product._id,quantity,"quantityquantity")
-      await apiService.addToCart(product._id, quantity);
-      // optional: show a toast here
-      // toast.success('Added to cart');
-      // Go to cart
-      navigate('/cart');
-    } catch (e: any) {
-      // toast.error(e?.message || 'Could not add to cart');
-      if (e?.status === 401) navigate('/login', { state: { from: '/product-detail' } });
-    }
+    addToCart(
+      {
+        _id: product._id,
+        name: product.name,
+        imageUrl: product.imageUrl,
+        pricePaise: product.pricePaise,
+        slug: product.slug,
+      },
+      quantity
+    );
+    navigate('/cart');
   };
 
   const handleBuyNow = () => {

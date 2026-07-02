@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { apiService } from "@/services/api";
+import { addToCart } from "@/lib/cart";
 
 type ApiProduct = {
   _id: string;
@@ -94,6 +95,21 @@ const NewFeaturedProducts: React.FC<{ limit?: number; className?: string }> = ({
         <p className="mx-auto max-w-[260px] text-sm leading-6 text-gray-600 line-clamp-3">
           {p.description?.trim() || descFallback}
         </p>
+        <button
+          type="button"
+          onClick={() =>
+            addToCart({
+              _id: p._id,
+              name: p.name,
+              imageUrl: p.imageUrl,
+              pricePaise: p.pricePaise,
+              slug: p.slug,
+            })
+          }
+          className="mt-5 inline-flex items-center justify-center rounded-full bg-[hsl(var(--ff-yellow))] px-6 py-2.5 text-sm font-semibold text-[hsl(var(--ff-dark))] transition hover:bg-[hsl(var(--ff-yellow))]/90"
+        >
+          Add to Cart
+        </button>
       </div>
     </div>
   );

@@ -1,9 +1,17 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
+import { getCartCount, subscribeCart } from "@/lib/cart";
 
 const NewHeader = () => {
   const { isAuthenticated } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
+
+  useEffect(() => {
+    const update = () => setCartCount(getCartCount());
+    update();
+    return subscribeCart(update);
+  }, []);
 
   const navItems = useMemo(
     () => [
@@ -24,7 +32,7 @@ const NewHeader = () => {
   return (
     <>
       {/* Header */}
-      <header className=" top-0 left-0 z-50 w-full bg-[#0D2A4B] md:bg-white ">
+      <header className="fixed top-0 left-0 z-50 w-full bg-[#0D2A4B] md:bg-white ">
         <div className="mx-auto max-w-7xl px-4 md:px-6s">
           <div className="flex h-20 md:h-24 items-center justify-between">
             {/* Mobile: Hamburger (md:hidden) */}
@@ -50,13 +58,18 @@ const NewHeader = () => {
             {/* Mobile: Cart */}
             <a
               href="/cart"
-              className="md:hidden inline-flex items-center gap-2 h-9 px-3 rounded-md bg-[hsl(var(--ff-yellow))] hover:bg-[hsl(var(--ff-yellow))]/90 transition"
+              className="md:hidden relative inline-flex items-center gap-2 h-9 px-3 rounded-md bg-[hsl(var(--ff-yellow))] hover:bg-[hsl(var(--ff-yellow))]/90 transition"
               aria-label="Open cart"
             >
               <svg className="h-4 w-4 text-[hsl(var(--ff-dark))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4m1.6 8L5 3H3m4 10v6a1 1 0 001 1h10a1 1 0 001-1v-6M9 19h6" />
               </svg>
               <span className="text-[hsl(var(--ff-dark))] text-sm font-semibold">Cart</span>
+              {cartCount > 0 && (
+                <span className="absolute -top-2 -right-2 inline-flex items-center justify-center min-w-5 h-5 px-1 rounded-full bg-[hsl(var(--ff-navy))] text-white text-xs font-bold">
+                  {cartCount}
+                </span>
+              )}
             </a>
 
             {/* Desktop: Centered Nav Pill (single logo + links) */}
@@ -86,12 +99,17 @@ const NewHeader = () => {
 
                 <a
                   href="/cart"
-                  className="ml-2 inline-flex items-center gap-2 h-10 px-4 rounded-full bg-[hsl(var(--ff-yellow))] hover:bg-[hsl(var(--ff-yellow))]/90 transition"
+                  className="relative ml-2 inline-flex items-center gap-2 h-10 px-4 rounded-full bg-[hsl(var(--ff-yellow))] hover:bg-[hsl(var(--ff-yellow))]/90 transition"
                 >
                   <svg className="h-4 w-4 text-[hsl(var(--ff-dark))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4m1.6 8L5 3H3m4 10v6a1 1 0 001 1h10a1 1 0 001-1v-6M9 19h6" />
                   </svg>
                   <span className="text-[hsl(var(--ff-dark))] font-semibold">Cart</span>
+                  {cartCount > 0 && (
+                    <span className="absolute -top-2 -right-2 inline-flex items-center justify-center min-w-5 h-5 px-1 rounded-full bg-[hsl(var(--ff-navy))] text-white text-xs font-bold">
+                      {cartCount}
+                    </span>
+                  )}
                 </a>
               </nav>
             </div>
@@ -139,12 +157,17 @@ const NewHeader = () => {
               <a
                 href="/cart"
                 onClick={() => setMenuOpen(false)}
-                className="mt-auto inline-flex items-center gap-2 h-11 px-4 rounded-md bg-[hsl(var(--ff-yellow))] hover:bg-[hsl(var(--ff-yellow))]/90 transition"
+                className="relative mt-auto inline-flex items-center gap-2 h-11 px-4 rounded-md bg-[hsl(var(--ff-yellow))] hover:bg-[hsl(var(--ff-yellow))]/90 transition"
               >
                 <svg className="h-4 w-4 text-[hsl(var(--ff-dark))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4m1.6 8L5 3H3m4 10v6a1 1 0 001 1h10a1 1 0 001-1v-6M9 19h6" />
                 </svg>
                 <span className="text-[hsl(var(--ff-dark))] font-semibold">Cart</span>
+                {cartCount > 0 && (
+                  <span className="absolute -top-2 -right-2 inline-flex items-center justify-center min-w-5 h-5 px-1 rounded-full bg-[hsl(var(--ff-navy))] text-white text-xs font-bold">
+                    {cartCount}
+                  </span>
+                )}
               </a>
             </div>
           </div>
@@ -152,7 +175,7 @@ const NewHeader = () => {
       </header>
 
       {/* Spacer for fixed header (avoid content hiding) */}
-      <div className="h-16 md:h-24" />
+      <div className="h-20 md:h-24" />
     </>
   );
 };

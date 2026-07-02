@@ -5,6 +5,7 @@ import NewHeader from "@/components/NewHeader";
 import NewsletterFooter from "@/components/NewsletterFooter";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { addToCart } from "@/lib/cart";
 
 function formatINR(paise?: number) {
   if (typeof paise !== "number") return "—";
@@ -117,6 +118,21 @@ const Shop: React.FC = () => {
                         View
                       </Button>
                     </div>
+
+                    <Button
+                      className="mt-4 w-full bg-[hsl(var(--ff-navy))] text-white hover:bg-[hsl(var(--ff-navy))]/90 rounded-full"
+                      onClick={() =>
+                        addToCart({
+                          _id: p._id,
+                          name: p.name,
+                          imageUrl: p.imageUrl,
+                          pricePaise: p.pricePaise,
+                          slug: p.slug,
+                        })
+                      }
+                    >
+                      Add to Cart
+                    </Button>
 
                     {/* Optional: stock pill */}
                     <div className="mt-3">

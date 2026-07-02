@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/context/AuthContext";
 import { apiService, Cart, OrderAddress } from "@/services/api";
+import { getLocalCart, clearCart, subscribeCart, syncCartToServer } from "@/lib/cart";
 
 function formatPriceFromPaise(paise?: number) {
   if (typeof paise !== "number" || isNaN(paise)) return "0,00 kr";
@@ -98,21 +99,10 @@ const Checkout: React.FC = () => {
   }, [user]);
 
   useEffect(() => {
-    let mounted = true;
-
-    (async () => {
-      try {
-        const data = await apiService.getCart();
-        if (mounted) setCart(data);
-      } catch {
-      } finally {
-        if (mounted) setLoading(false);
-      }
-    })();
-
-    return () => {
-      mounted = false;
-    };
+    const update = () => setCart(getLocalCart());
+    update();
+    setLoading(false);
+    return subscribeCart(update);
   }, []);
 
   const subtotalPaise = useMemo(() => {
@@ -236,6 +226,10 @@ const Checkout: React.FC = () => {
     setPaymentError(null);
 
     try {
+      if (localStorage.getItem("authToken")) {
+        await syncCartToServer();
+      }
+
       const createdOrderResponse = await apiService.createOrder(orderAddress);
       const orderData =
         "order" in createdOrderResponse
@@ -248,6 +242,7 @@ const Checkout: React.FC = () => {
       }
 
       localStorage.setItem(PENDING_CHECKOUT_ORDER_KEY, orderId);
+      clearCart();
 
       const session = await apiService.createCheckoutSession(
         orderId,
@@ -266,15 +261,15 @@ const Checkout: React.FC = () => {
       );
     } catch (e: any) {
       const errorMsg =
-        e?.message || "Could not start Stripe checkout. Please try again.";
+        e?.status === 401
+          ? "Placing an order requires logging in. Please log in to complete your payment."
+          : e?.message || "Could not start Stripe checkout. Please try again.";
       setPaymentError(errorMsg);
       console.error("Checkout redirect error:", e);
     } finally {
       setSubmitting(false);
     }
   };
-
-  if (!isAuthenticated) return null;
 
   return (
     <div className="min-h-screen bg-white">

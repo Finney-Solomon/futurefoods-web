@@ -5,7 +5,8 @@ import NewHeader from '@/components/NewHeader';
 import NewsletterFooter from '@/components/NewsletterFooter';
 import { Button } from '@/components/ui/button';
 import { Minus, Plus, Trash2 } from 'lucide-react';
-import { apiService, Cart, CartItem } from '@/services/api';
+import { Cart, CartItem } from '@/services/api';
+import { getLocalCart, updateCartItem, removeCartItem, subscribeCart } from '@/lib/cart';
 
 function formatINRFromPaise(paise?: number) {
   if (typeof paise !== 'number') return '—';
@@ -21,19 +22,11 @@ const CartPage: React.FC = () => {
 
   // Load cart on mount
   useEffect(() => {
-    let mounted = true;
-    (async () => {
-      try {
-        const data = await apiService.getCart();
-        if (mounted) setCart(data);
-      } catch (e: any) {
-        if (e?.status === 401) navigate('/login', { state: { from: '/cart' } });
-      } finally {
-        if (mounted) setLoading(false);
-      }
-    })();
-    return () => { mounted = false; };
-  }, [navigate]);
+    const update = () => setCart(getLocalCart());
+    update();
+    setLoading(false);
+    return subscribeCart(update);
+  }, []);
 
   const subtotalPaise = useMemo(() => {
     if (!cart) return 0;
@@ -44,27 +37,16 @@ const CartPage: React.FC = () => {
   const totalPaise = subtotalPaise + (cart ? (cart.items.length > 0 ? shippingPaise : 0) : 0);
 
   // Update quantity (+/-)
-  const changeQty = async (item: CartItem, nextQty: number) => {
-    console.log(item,nextQty,"nextQtynextQty")
+  const changeQty = (item: CartItem, nextQty: number) => {
     if (nextQty < 1) return;
-    try {
-      const updated = await apiService.updateCartItem(item?._id, nextQty);
-      console.log(updated,"updatedupdated")
-     setCart({ ...updated }); 
-    } catch (e: any) {
-      // toast.error(e?.message || 'Could not update item');
-      if (e?.status === 401) navigate('/login', { state: { from: '/cart' } });
-    }
+    updateCartItem(item.product._id, nextQty);
+    setCart(getLocalCart());
   };
 
   // Remove item
-  const removeItem = async (item: CartItem) => {
-    try {
-      const updated = await apiService.removeCartItem(item._id);
-    setCart({ ...updated }); 
-    } catch (e: any) {
-      if (e?.status === 401) navigate('/login', { state: { from: '/cart' } });
-    }
+  const removeItem = (item: CartItem) => {
+    removeCartItem(item.product._id);
+    setCart(getLocalCart());
   };
 
   const handleCheckout = () => {
